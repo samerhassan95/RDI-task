@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from ..models import PDFFile
-from serializers import PDFFileSerializer
+from file_api.serializers import PDFFileSerializer
 from ..utils.pdfs_utils import extract_pdf_metadata
 
 class PDFFileViewSet(viewsets.ModelViewSet):

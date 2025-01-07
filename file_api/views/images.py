@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from ..models import ImageFile
-from serializers import ImageFileSerializer
+from file_api.serializers import ImageFileSerializer
 from ..utils.images_utils import extract_image_metadata
 
 class ImageFileViewSet(viewsets.ModelViewSet):
