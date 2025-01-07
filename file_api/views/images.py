@@ -5,10 +5,13 @@ from file_api.serializers import ImageFileSerializer
 from ..utils.images_utils import extract_image_metadata
 from rest_framework.exceptions import ValidationError
 import os
+from rest_framework.views import APIView
+from PIL import Image
 
 class ImageFileViewSet(viewsets.ModelViewSet):
     queryset = ImageFile.objects.all()
     serializer_class = ImageFileSerializer
+
 
     def perform_create(self, serializer):
         try:
@@ -59,3 +62,38 @@ class ImageFileViewSet(viewsets.ModelViewSet):
             return Response(metadata, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+#### rotating image ####
+class RotateImageView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            image_id = request.data.get('image_id')
+            angle = request.data.get('angle')
+
+            if not image_id or not angle:
+                return Response(
+                    {'error': 'Both image_id and angle are required.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Fetch the image file from the database
+            image_file = ImageFile.objects.get(id=image_id)
+            image_path = image_file.file.path
+
+            # Rotate the image
+            with Image.open(image_path) as img:
+                rotated_image = img.rotate(-int(angle), expand=True)
+                
+                # Save the rotated image back to the original file path
+                rotated_image.save(image_path)  # Overwrites the original image
+
+            return Response({'message': 'Image rotated successfully.'})
+        except ImageFile.DoesNotExist:
+            return Response(
+                {'error': f'Image with ID {image_id} does not exist.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
