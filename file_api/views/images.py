@@ -63,6 +63,24 @@ class ImageFileViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, *args, **kwargs):
+        try:
+            # Get the object to be deleted
+            instance = self.get_object()
+            file_path = instance.file.path
+
+            # Delete the object from the database
+            response = super().destroy(request, *args, **kwargs)
+
+            # Remove the file from the media folder
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+            return response
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 #### rotating image ####
