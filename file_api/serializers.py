@@ -12,7 +12,10 @@ class ImageFileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid file type. Only PNG, JPG, and JPEG are allowed.")
         if file.size > 5 * 1024 * 1024:  # 5MB limit
             raise serializers.ValidationError("File size exceeds the 5MB limit.")
+        if file.size == 0:  # Ensure file is not empty
+            raise serializers.ValidationError("File cannot be empty.")
         return file
+
 
 ##### PDF Serializer #####
 class PDFFileSerializer(serializers.ModelSerializer):
