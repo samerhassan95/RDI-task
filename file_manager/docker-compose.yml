@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3
+      - DB_NAME=rdi
+      - DB_USER=root
+      - DB_PASSWORD=samerhassan11
+      - DB_HOST=db
+      - DB_PORT=3306
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=rdi
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=samerhassan11
+      - MYSQL_ROOT_PASSWORD=samerhassan11
+    ports:
+      - "3307:3306"
+
+volumes:
+  mysql_data:
+  media_volume:

@@ -25,12 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3'
+# SECRET_KEY = 'django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3'
+SECRET_KEY = os.environ.get('django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', 1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['SamerHassan.pythonanywhere.com']
 
 
 # Application definition
@@ -84,11 +85,11 @@ WSGI_APPLICATION = 'file_manager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
-        'PORT': '3307',
-        'NAME': 'rdi',
-        'USER': 'root',
-        'PASSWORD': 'samerhassan11',
+        'NAME': os.environ.get('DB_NAME', 'rdi'),
+        'USER': os.environ.get('DB_USER', 'root'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'samerhassan11'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DB_PORT', '3307'),
     }
 }
 
