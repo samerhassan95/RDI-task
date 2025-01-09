@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+import secrets
+print(secrets.token_urlsafe(50))
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -26,12 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3'
-SECRET_KEY = os.environ.get('django-insecure-i(cwwy^q2@%5d$8m^g@@_i9_w%v_ro!)%$%hm-r%0+(2j8&0y3')
+SECRET_KEY = 'qyVkgnlxocImztbVBZhv5YvjvUQqZoUPt-CfceFQT14xQeJctG-bjHgCBl2wz9VOj74'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', 1))
+DEBUG = True
 
-ALLOWED_HOSTS = ['SamerHassan.pythonanywhere.com']
+
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
 
 
 # Application definition
@@ -82,16 +89,21 @@ WSGI_APPLICATION = 'file_manager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'rdi'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'samerhassan11'),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT', '3307'),
+        'NAME': os.getenv('DB_NAME', 'rdi'),  # Default to 'rdi'
+        'USER': os.getenv('DB_USER', 'root'),  # Default to 'root'
+        'PASSWORD': os.getenv('DB_PASSWORD', 'samerhassan11'),  # Default to 'samerhassan11'
+        'HOST': os.getenv('DB_HOST', 'db'),  # Default to 'db'
+        'PORT': os.getenv('DB_PORT', '3306'),  # Default to '3306'
     }
 }
+
+
+
 
 
 # Password validation
